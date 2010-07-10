@@ -74,6 +74,7 @@ module AWS
       end
 
       def  process_dimensions(original) 
+        count = 1
         dimensions.inject({}) do |res, bosh|         
           res["Dimensions.member.#{count}.Name"] = bosh[0]
           res["Dimensions.member.#{count}.Value"] = bosh[1]
