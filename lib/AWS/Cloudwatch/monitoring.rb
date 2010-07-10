@@ -55,10 +55,22 @@ module AWS
         raise ArgumentError, ":start_time must be before :end_time" if options[:start_time] > options[:end_time]
         raise ArgumentError, ":measure_name must be provided" if options[:measure_name].nil? || options[:measure_name].empty?
         raise ArgumentError, ":statistics must be provided" if options[:statistics].nil? || options[:statistics].empty?
+                                                                                                             
+
+        new_dimensions = options[:dimensions].inject({}) do |res, elem|
+          puts "RES = #{res}"
+          puts "elem = #{elem}"
+        end
+
+        index = 1                                           
+        new_dimensions = {}
+
+        options[:dimensions].each_pair do |k,v| 
+          new_dimensions << {"Dimensions.member.#{index}.Name" => k, "Dimensions.member.#{index}.Value" => v}
+        end
 
         params = {
                     "CustomUnit" => options[:custom_unit],
-                    "Dimensions" => options[:dimensions],
                     "EndTime" => options[:end_time].iso8601,
                     "MeasureName" => options[:measure_name],
                     "Namespace" => options[:namespace],
@@ -66,7 +78,7 @@ module AWS
                     "Statistics.member.1" => options[:statistics],
                     "StartTime" => options[:start_time].iso8601,
                     "Unit" => options[:unit]
-        }
+        }.merge(new_dimensions)
 
         return response_generator(:action => 'GetMetricStatistics', :params => params)
 
