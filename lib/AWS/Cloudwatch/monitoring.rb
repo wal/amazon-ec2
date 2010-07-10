@@ -67,7 +67,7 @@ module AWS
                     "Statistics.member.1" => options[:statistics],
                     "StartTime" => options[:start_time].iso8601,
                     "Unit" => options[:unit]
-        }.merge(process_dimensions)
+        }.merge(processed_dimensions)
 
         return response_generator(:action => 'GetMetricStatistics', :params => params)
 
