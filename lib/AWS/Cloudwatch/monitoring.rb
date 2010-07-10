@@ -78,7 +78,7 @@ module AWS
         original_dimensions.inject({}) do |res, bosh|         
           res["Dimensions.member.#{count}.Name"] = bosh[0]
           res["Dimensions.member.#{count}.Value"] = bosh[1]
-          index +=1
+          count +=1
           res
         end
       end
